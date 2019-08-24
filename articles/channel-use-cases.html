@@ -164,7 +164,8 @@ import (
 
 func source(c chan<- int32) {
 	ra, rb := rand.Int31(), rand.Intn(3) + 1
-	time.Sleep(time.Duration(rb) * time.Second) // 睡眠1秒/2秒/3秒
+	// 睡眠1秒/2秒/3秒
+	time.Sleep(time.Duration(rb) * time.Second)
 	c <- ra
 }
 
@@ -241,7 +242,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	done := make(chan struct{})
+	done := make(chan struct{}) // 也可以是缓冲的
+
+	// 排序协程
 	go func() {
 		sort.Slice(values, func(i, j int) bool {
 			return values[i] < values[j]
@@ -280,8 +283,9 @@ import (
 )
 
 func main() {
-	// 创建一个信号通道。
-	done := make(chan struct{}, 1)
+	done := make(chan struct{})
+		// 此信号通道也可以缓冲为1。如果这样，则在下面
+		// 这个协程创建之前，我们必须向其中写入一个值。
 
 	go func() {
 		fmt.Print("Hello")
@@ -298,11 +302,10 @@ func main() {
 </code></pre>
 
 <p>
-实际上，上例中的数据通道被用做了一个一次性的二元信号量。信号量将在下面介绍。
 </p>
 
 <p>
-另一个事实是，上面的两种单对单通知方式并没有本质的区别。
+另一个事实是，上面的两种单对单通知方式其实并没有本质的区别。
 它们都可以被概括为较快者等待较慢者发出通知。
 </p>
 
@@ -980,7 +983,8 @@ import (
 
 func source(c chan<- int32) {
 	ra, rb := rand.Int31(), rand.Intn(3)+1
-	time.Sleep(time.Duration(rb) * time.Second) // 休眠1秒/2秒/3秒
+	// 休眠1秒/2秒/3秒
+	time.Sleep(time.Duration(rb) * time.Second)
 	select {
 	case c <- ra:
 	default:
@@ -1045,6 +1049,10 @@ func main() {
 </code></pre>
 
 <p>
+注意：如果上例中使用的数据通道是非缓冲的，未被选中的<code>case</code>分支对应的两个<code>source</code>函数调用中开辟的协程将处于永久阻塞状态，从而造成<a href="memory-leaking.html#hanging-goroutine">内存泄露</a>。
+</p>
+
+<p>
 本小节和上一小节中展示的两种方法也可以用来实现多对单通知。
 </p>
 
@@ -1091,7 +1099,7 @@ import "fmt"
 import "time"
 
 func Tick(d time.Duration) <-chan struct{} {
-	c := make(chan struct{}, 1) // 容量必须严格为1
+	c := make(chan struct{}, 1) // 容量最好为1
 	go func() {
 		for {
 			time.Sleep(d)

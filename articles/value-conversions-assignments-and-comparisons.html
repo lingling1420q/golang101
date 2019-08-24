@@ -7,10 +7,12 @@
 <a class="anchor" id="conversion"></a>
 <h3>类型转换规则大全</h3>
 
+<!--
 <p>
-注意：Go语言101中<b>类型转换</b>术语的意思和Go白皮书中并不完全一致。
-Go白皮书中的类型转换只包括显式类型转换，但是Go语言101中类型转换包括显式和隐式转换。
+注意：《Go语言101》中<b>类型转换</b>术语的意思和Go白皮书中并不完全一致。
+Go白皮书中的类型转换只包括显式类型转换，但是《Go语言101》中类型转换包括显式和隐式转换。
 </p>
+-->
 
 <p>
 在Go中，如果一个值<code>v</code>可以被显式地转换为类型<code>T</code>，则此转换可以使用语法形式<code>(T)(v)</code>来表示。
@@ -127,8 +129,8 @@ func main() {
 	var _ MyIntPtr = pi  // 不能隐式转换
 	var _ = MyIntPtr(pi) // 也不能显式转换
 	*/
-	var _ MyIntPtr = (*MyInt)(pi)  // 间接隐式转换是没问题的
-	var _ = MyIntPtr((*MyInt)(pi)) // 间接显式转换是没问题的
+	var _ MyIntPtr = (*MyInt)(pi)  // 间接隐式转换没问题
+	var _ = MyIntPtr((*MyInt)(pi)) // 间接显式转换没问题
 
 	// 类型IntPtr的值不能被直接转换为类型MyIntPtr，
 	// 但是可以间接地转换过去。

@@ -413,7 +413,7 @@ func main() {
 	<ol>
 	<li>你可以在函数声明前增加一行<code>//go:noinline</code> 指令来避免这个函数被内联。</li>
 	<li><span style="text-decoration:line-through;">由于包含循环块的函数不会内联，所以你可以再函数里增加一个空循环 <code>for false {}</code>来避免该函数被内联</span>。
-		（但是这个方法<a href="https://github.com/golang/go/issues/14768">从Go 1.13开始将不再有效</a>。）
+		（但是这个方法<a href="https://github.com/golang/go/issues/14768">从Go 1.14开始将不再有效</a>。）
 	</li>
 	</ol>
 </li>
@@ -439,25 +439,25 @@ type T int // just a demo
 var p *T
 
 func demo(newP *T) {
-	// load
+	// 加载（读取）
 	var _ = (*T)(atomic.LoadPointer(
 		(*unsafe.Pointer)(unsafe.Pointer(&p)),
 		))
 
-	// store
+	// 存储（修改）
 	atomic.StorePointer(
 		(*unsafe.Pointer)(unsafe.Pointer(&p)),
 		unsafe.Pointer(newP),
 		)
 
 
-	// swap
+	// 交换
 	var oldP = (*T)(atomic.SwapPointer(
 		(*unsafe.Pointer)(unsafe.Pointer(&p)),
 		unsafe.Pointer(newP),
 		))
 
-	// compare and swap
+	// 比较并交换
 	var swapped = atomic.CompareAndSwapPointer(
 		(*unsafe.Pointer)(unsafe.Pointer(&p)),
 		unsafe.Pointer(oldP),
@@ -846,14 +846,14 @@ func main() {
 </h3>
 
 <div>
-以下的值不可以被取地址：
+以下的值是不可以寻址的：
 <ul>
 <li>字符串的字节元素</li>
 <li>映射元素</li>
 <li>接口值的动态值（类型断言的结果）</li>
 <li>常量值</li>
 <li>字面值</li>
-<li>包级别函数</li>
+<li>声明的包级别函数</li>
 <li>方法（用做函数值）</li>
 <li>中间结果值
 	<ul>
@@ -873,11 +873,11 @@ func main() {
 
 <div class="alert alert-success">
 请注意：<code>&amp;T{}</code>在Go里是一个语法糖，它是<code>tmp := T{}; (&amp;tmp)</code>的简写形式。
-所以<code>&amp;T{}</code>是合法的并不代表字面值<code>T{}</code>可以被取地址。
+所以<code>&amp;T{}</code>是合法的并不代表字面值<code>T{}</code>是可寻址的。
 </div>
 <p></p>
 
-以下的值可以被取地址：
+以下的值是可寻址的，因此可以被取地址：
 <ul>
 <li>变量</li>
 <li>可寻址的结构体的字段</li>

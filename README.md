@@ -7,7 +7,7 @@
 这本书旨在尽可能地帮助Go程序员更深更全面地理解Go语言。
 此书同时适合Go初学者和有一定经验的Go程序员阅读。
 
-此书的英文项目（亦为本人维护）地址为：
+此书的英文项目地址为：
 * [gitlab.com/go101/go101](https://gitlab.com/go101/go101)
 * [github.com/go101/go101](https://github.com/go101/go101)
 
@@ -19,23 +19,36 @@
 
 见[本书致谢一章](https://gfw.go101.org/article/acknowledgements.html)。
 
-### 安装和更新
+### 安装
 
-运行以下两条中任意一条命令来安装和更新Go语言101。
+运行
 
 ```
-$ go get -u gitlab.com/golang101/golang101
-
-$ go get -u github.com/golang101/golang101
+$ git clone gitlab.com/go101/go101
 ```
 
-这两条命令将安装`golang101`程序到`GOPATH`环境变量下的`bin`目录。
+或者
+
+```
+$ git clone github.com/go101/go101
+```
+
+
+### 更新
+
+进入本书项目目录（包含当前`README.md`文件的目录），然后运行：
+
+```
+$ git pull
+```
 
 ### 本地阅读本书
 
-直接运行`golang`即可进行本地阅读（注意需要将`GOPATH`环境变量下的`bin`目录加入`PATH`环境变量以运行`golang101`）。
+
+进入本书项目目录（包含当前`README.md`文件的目录），然后运行：
+
 ```
-$ golang101
+$ go run *.go
 Server started:
    http://localhost:12345 (non-cached version)
    http://127.0.0.1:12345 (cached version)
